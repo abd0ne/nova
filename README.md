@@ -9,6 +9,10 @@ This repository hosts a spring boot projects for the beginner .
 * JDK 8
 * IntelliJ IDEA
 
+## Projects
+    nova
+       |--- spring-boot-data-rest: exposes REST webservices via repositories 
+       |--- spring-boot-hateoas : RESTful using HATEOAS
 ## To import this project into IntelliJ IDEA
 
 If you want to import these project into your local IDE setup - 
