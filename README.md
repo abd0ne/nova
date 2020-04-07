@@ -13,13 +13,13 @@ This repository hosts a spring boot projects for the beginner .
     nova
        |--- spring-boot-data-rest: exposes REST webservices via repositories 
        |--- spring-boot-hateoas : RESTful using HATEOAS
-## To import this project into IntelliJ IDEA
+## To import this project into STS or IntelliJ IDEA
 
 If you want to import these project into your local IDE setup - 
 
 1. Download the project as zip file into your computer
 2. Unzip the project at your desired location
-3. Import the project into Eclipse as existing maven project
+3. Open project with IntelliJ or import into STS as existing maven project
 
 ```
 File > Import... > Maven > Existing Maven Projects
