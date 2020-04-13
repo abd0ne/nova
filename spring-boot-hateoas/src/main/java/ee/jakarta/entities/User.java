@@ -33,6 +33,7 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name = "last_name")
 	private String name;
 
 	@Column(name = "first_name")

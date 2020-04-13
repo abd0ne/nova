@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-data-rest" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-hateoas" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-mapstruct" charset="UTF-8" />
   </component>
 </project>
