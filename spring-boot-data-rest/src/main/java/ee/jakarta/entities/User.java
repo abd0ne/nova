@@ -1,6 +1,5 @@
 package ee.jakarta.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +22,7 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name = "last_name")
 	private String name;
 
 	@Column(name = "first_name")
@@ -31,7 +31,6 @@ public class User implements Serializable {
 	@Column(name = "e_mail")
 	private String email;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Task> tasks = new ArrayList<>();
 }

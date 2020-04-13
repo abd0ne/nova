@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.hateoas.server.core.Relation;
 
 import javax.persistence.*;
@@ -27,5 +28,6 @@ public class Task implements Serializable{
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "fk_user", nullable = false)
+	@RestResource(exported = false)
 	private User user;
 }
