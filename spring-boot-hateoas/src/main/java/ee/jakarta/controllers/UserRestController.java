@@ -8,8 +8,11 @@ import ee.jakarta.models.UserModel;
 import ee.jakarta.services.impl.TaskService;
 import ee.jakarta.services.impl.UserService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +32,7 @@ public class UserRestController {
     private final UserService userService;
     private final TaskService taskService;
     private final UserModelAssembler userModelAssembler;
+    private final Logger logger = LoggerFactory.getLogger(UserRestController.class);
 
     @GetMapping
     public ResponseEntity<CollectionModel<UserModel>> findAll() {
@@ -37,21 +41,35 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserModel> findOne(@PathVariable long id) {
-        return userService.findById(id)
-                .map(userModelAssembler::toModel)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<EntityModel<UserModel>> findOne(@PathVariable long id) {
+        HttpStatus httpStatus = HttpStatus.OK;
+        UserModel userModel = new UserModel();
+        try {
+            userModel = userService.findById(id);
+        }catch (Exception e){
+            httpStatus = HttpStatus.BAD_REQUEST;
+            logger.error("User not found ...");
+        }
+
+        return ResponseEntity.status(httpStatus).body(new EntityModel<>(userModel));
     }
 
     @GetMapping("/{id}/tasks")
     public ResponseEntity<CollectionModel<EntityModel<Task>>> findTasks(@PathVariable long id) {
-        User user = userService.findById(id).get();
+        UserModel userModel;
+        User user = null;
+        try {
+            userModel = userService.findById(id);
+            user = new User(userModel.getUserId(), userModel.getName(), userModel.getFirstName(), userModel.getMail(),null);
+        } catch (Exception e) {
+           logger.error(e.getMessage());
+        }
         List<EntityModel<Task>> tasks = taskService.findByUser(user).stream()
                 .map(task -> new EntityModel<>(task,
                         linkTo(methodOn(TaskRestController.class).findOne(task.getId())).withSelfRel()))
                 .collect(Collectors.toList());
 
+        assert user != null;
         return ResponseEntity.ok(new CollectionModel<>(tasks, linkTo(methodOn(UserRestController.class).findTasks(user.getId())).withSelfRel()));
     }
 }

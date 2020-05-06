@@ -1,6 +1,8 @@
 package ee.jakarta.services.impl;
 
+import ee.jakarta.assemblers.UserModelAssembler;
 import ee.jakarta.entities.User;
+import ee.jakarta.models.UserModel;
 import ee.jakarta.repositories.UserRepository;
 import ee.jakarta.services.IUserService;
 import lombok.AllArgsConstructor;
@@ -14,13 +16,14 @@ import java.util.Optional;
 @Transactional
 @AllArgsConstructor
 public class UserService implements IUserService {
+    private final UserModelAssembler userModelAssembler;
     private final UserRepository userRepository;
 
     public List<User> findAll(){
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(long id){
-        return userRepository.findById(id);
+    public UserModel findById(long id) throws Exception {
+        return userRepository.findById(id).map(userModelAssembler::toModel).orElseThrow(Exception::new);
     }
 }
