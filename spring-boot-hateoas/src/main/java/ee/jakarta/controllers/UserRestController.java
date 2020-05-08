@@ -42,16 +42,7 @@ public class UserRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<UserModel>> findOne(@PathVariable long id) {
-        HttpStatus httpStatus = HttpStatus.OK;
-        UserModel userModel = new UserModel();
-        try {
-            userModel = userService.findById(id);
-        }catch (Exception e){
-            httpStatus = HttpStatus.BAD_REQUEST;
-            logger.error("User not found ...");
-        }
-
-        return ResponseEntity.status(httpStatus).body(new EntityModel<>(userModel));
+        return ResponseEntity.status(HttpStatus.OK).body(new EntityModel<>(userService.findById(id)));
     }
 
     @GetMapping("/{id}/tasks")

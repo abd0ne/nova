@@ -2,6 +2,7 @@ package ee.jakarta.services.impl;
 
 import ee.jakarta.assemblers.UserModelAssembler;
 import ee.jakarta.entities.User;
+import ee.jakarta.exceptions.UserNotFoundException;
 import ee.jakarta.models.UserModel;
 import ee.jakarta.repositories.UserRepository;
 import ee.jakarta.services.IUserService;
@@ -23,7 +24,7 @@ public class UserService implements IUserService {
         return userRepository.findAll();
     }
 
-    public UserModel findById(long id) throws Exception {
-        return userRepository.findById(id).map(userModelAssembler::toModel).orElseThrow(Exception::new);
+    public UserModel findById(long id) throws UserNotFoundException {
+        return userRepository.findById(id).map(userModelAssembler::toModel).orElseThrow(() -> new UserNotFoundException(id));
     }
 }
